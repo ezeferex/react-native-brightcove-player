@@ -1,8 +1,6 @@
 package jp.manse;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
-
 import com.brightcove.player.edge.Catalog;
 import com.brightcove.player.edge.OfflineCallback;
 import com.brightcove.player.edge.OfflineCatalog;

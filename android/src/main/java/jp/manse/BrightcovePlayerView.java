@@ -4,7 +4,6 @@ import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.support.v4.view.ViewCompat;
-import android.util.Log;
 import android.view.Choreographer;
 import android.view.SurfaceView;
 import android.view.View;
@@ -23,6 +22,7 @@ import com.brightcove.player.mediacontroller.BrightcoveMediaControlRegistry;
 import com.brightcove.player.mediacontroller.buttons.SeekButtonController;
 import com.brightcove.player.model.Video;
 import com.brightcove.player.analytics.Analytics;
+import com.brightcove.player.model.VideoFields;
 import com.brightcove.player.view.BrightcoveExoPlayerVideoView;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.LifecycleEventListener;
@@ -139,6 +139,17 @@ public class BrightcovePlayerView extends RelativeLayout implements LifecycleEve
 
                 ReactContext reactContext = (ReactContext) BrightcovePlayerView.this.getContext();
                 reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(BrightcovePlayerView.this.getId(), BrightcovePlayerManager.EVENT_METADATA_LOADED, event);
+
+                // Only enable DAI plugin when the Custom field of the stream is the same as the Configuration DAI Asset Key
+                Map<String, String> customFields = (HashMap<String, String>) playerVideoView.getCurrentVideo().getProperties().get(VideoFields.CUSTOM_FIELDS);
+                if (!customFields.isEmpty()) {
+                    if (customFields.get(jp.manse.util.Configuration.CUSTOM_FIELD_DAI) != null &&
+                        customFields.get(jp.manse.util.Configuration.CUSTOM_FIELD_DAI).equals(jp.manse.util.Configuration.DAI_ASSET_KEY)) {
+                        // Enable DAI plugin
+                        DAIManager daiManager = new DAIManager(BrightcovePlayerView.this.getContext(), BrightcovePlayerView.this, playerVideoView);
+                        daiManager.requestAndPlayAds();
+                    }
+                }
             }
         });
 
