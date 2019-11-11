@@ -78,8 +78,12 @@ class DAIManager(private val context: Context,
             }
 
             override fun getContentProgress(): VideoProgressUpdate {
-                return VideoProgressUpdate(videoPlayer.currentPosition.toLong(),
-                    videoPlayer.get(0).duration.toLong())
+                return if (videoPlayer.duration <= 0) {
+                    VideoProgressUpdate.VIDEO_TIME_NOT_READY
+                } else {
+                    VideoProgressUpdate(videoPlayer.currentPosition.toLong(),
+                        videoPlayer.get(0).duration.toLong())
+                }
             }
 
             override fun onAdPeriodEnded() {
