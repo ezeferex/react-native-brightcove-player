@@ -19,7 +19,8 @@ import com.google.ads.interactivemedia.v3.api.player.VideoProgressUpdate
 
 class DAIManager(private val context: Context,
                  private val adUiContainer: ViewGroup,
-                 private val videoPlayer: BrightcoveExoPlayerVideoView
+                 private val videoPlayer: BrightcoveExoPlayerVideoView,
+                 private val daiAssetKey: String
 ) : AdEvent.AdEventListener, AdErrorEvent.AdErrorListener {
 
     private val sdkFactory: ImaSdkFactory = ImaSdkFactory.getInstance()
@@ -92,7 +93,7 @@ class DAIManager(private val context: Context,
     }
 
     private fun buildStreamRequest(): StreamRequest {
-        return sdkFactory.createLiveStreamRequest(Configuration.DAI_ASSET_KEY, null)
+        return sdkFactory.createLiveStreamRequest(daiAssetKey, null)
     }
 
     override fun onAdEvent(event: AdEvent?) {

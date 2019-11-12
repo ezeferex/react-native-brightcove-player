@@ -143,10 +143,10 @@ public class BrightcovePlayerView extends RelativeLayout implements LifecycleEve
                 // Only enable DAI plugin when the Custom field of the stream is the same as the Configuration DAI Asset Key
                 Map<String, String> customFields = (HashMap<String, String>) playerVideoView.getCurrentVideo().getProperties().get(VideoFields.CUSTOM_FIELDS);
                 if (!customFields.isEmpty()) {
-                    if (customFields.get(jp.manse.util.Configuration.CUSTOM_FIELD_DAI) != null &&
-                        customFields.get(jp.manse.util.Configuration.CUSTOM_FIELD_DAI).equals(jp.manse.util.Configuration.DAI_ASSET_KEY)) {
+                    if (customFields.get(jp.manse.util.Configuration.CUSTOM_FIELD_DAI) != null) {
                         // Enable DAI plugin
-                        DAIManager daiManager = new DAIManager(BrightcovePlayerView.this.getContext(), BrightcovePlayerView.this, playerVideoView);
+                        DAIManager daiManager = new DAIManager(BrightcovePlayerView.this.getContext(), BrightcovePlayerView.this, playerVideoView,
+                            customFields.get(jp.manse.util.Configuration.CUSTOM_FIELD_DAI));
                         daiManager.requestAndPlayAds();
                     }
                 }
